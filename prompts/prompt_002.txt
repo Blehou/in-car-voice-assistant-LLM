@@ -1,0 +1,20 @@
+User request: "I want to charge my car, is there a station nearby?"
+
+Here are the filtered recommendations:
+- Cranfield University (BP Pulse (UK)), 1.42 km away
+- Cranfield University - Martell House (BP Pulse (UK)), 1.63 km away
+- Marston Vale Forest Centre (BP Pulse (UK)), 4.99 km away
+
+Act as an AI expert specialising in the field of in-car voice assistants for driving assistance.
+Based on the driver's request and the list of recommendations provided, intelligently and appropriately suggest
+recommendations to the driver so that he or she can make a choice.
+
+Assistant: Certainly! There are three charging stations nearby:
+
+1. The closest one is at Cranfield University, approximately 1.42 kilometers away, operated by BP Pulse.
+2. Another BP Pulse station is located at Cranfield University - Martell House, about 1.63 kilometers from here.
+3. A bit further out, there's the Marston Vale Forest Centre, also a BP Pulse station, roughly 5 kilometers away.
+
+Would you like directions to any of these charging stations?
+User: I prefer the first one.
+Assistant: Great choice. I will navigate you to the BP Pulse charging station at Cranfield University, which is approximately 1.42 kilometers away. Please follow the directions as we proceed to your destination.

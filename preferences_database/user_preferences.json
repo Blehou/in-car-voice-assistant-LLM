@@ -1,0 +1,20 @@
+{
+    "fuel_type": "electric",
+    "preferred_providers": [
+        "BP Pulse (UK)",
+        "Ionity"
+    ],
+    "max_detour_km": 5,
+    "avoid": [
+        "highway stations"
+    ],
+    "charging_power_min_kw": 5,
+    "history": [
+        {
+            "location": "Cranfield University",
+            "station": "BP Pulse (UK)",
+            "used": true,
+            "timestamp": "2025-05-30T16:12:45.825557Z"
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+[
+    {
+        "timestamp": "2025-05-27T17:46:35.328507Z",
+        "recommended": [
+            "Cranfield University",
+            "Cranfield University - Martell House"
+        ],
+        "feedback": {
+            "Cranfield University": 4,
+            "Cranfield University - Martell House": 3
+        },
+        "relevant": [
+            "Cranfield University"
+        ],
+        "precision": 0.5,
+        "recall": 1.0
+    },
+    {
+        "timestamp": "2025-05-30T16:13:23.306395Z",
+        "recommended": [
+            "Cranfield University",
+            "Cranfield University - Martell House",
+            "Marston Vale Forest Centre",
+            "The Carrington Arms"
+        ],
+        "feedback": {
+            "Cranfield University": 4,
+            "Cranfield University - Martell House": 3,
+            "Marston Vale Forest Centre": 2,
+            "The Carrington Arms": 2
+        },
+        "relevant": [
+            "Cranfield University"
+        ],
+        "precision": 0.25,
+        "recall": 1.0
+    }
+]
