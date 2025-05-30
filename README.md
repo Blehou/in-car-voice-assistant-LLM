@@ -18,21 +18,6 @@ It combines speech recognition, real-time geolocation, and large language models
 
 ---
 
-##  Project Structure
-
-in-car-voice-assistant-LLM/
-│
-├── utils/ # ASR and TTS modules
-├── user/ # Location and query logging
-├── information_retriever/ # POI and station search via external APIs
-├── recommendation_engine/ # Scoring, evaluation, and prompt builder
-├── language_model/ # LLM interaction (OpenAI / OpenRouter)
-├── preferences_database/ # JSON-based user preferences management
-├── dialogue_manager/ # State machine and conversation logic
-├── prompts/ # Stored prompt histories
-└── main.py # Main entry point
----
-
 ##  Technologies
 
 - Python 3.10+
