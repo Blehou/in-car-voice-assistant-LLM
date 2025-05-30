@@ -25,7 +25,6 @@ It combines speech recognition, real-time geolocation, and large language models
 - pyttsx3 (TTS)
 - OpenAI / OpenRouter API (LLMs)
 - OpenChargeMap / TomTom (retrieval)
-- LangChain (optional, modular)
 - JSON for storage
 
 
