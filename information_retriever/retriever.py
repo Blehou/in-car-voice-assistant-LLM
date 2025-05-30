@@ -15,8 +15,8 @@ from geopy.geocoders import Nominatim
 from typing import List, Tuple, Optional
 
 # --- API KEYS ---
-OPENCHARGEMAP_API_KEY = "49af854f-f8fb-4b73-9fb1-b5a04ab8e393"
-TOMTOM_API_KEY = "V4Z58HqLLL2QnGFjC1RFsGnLn8alwNjK"
+OPENCHARGEMAP_API_KEY = "enter your API key"
+TOMTOM_API_KEY = "enter your API key"
 
 # --- URLs & Headers ---
 OPENCHARGEMAP_URL = "https://api.openchargemap.io/v3/poi/"
