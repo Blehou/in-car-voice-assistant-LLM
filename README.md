@@ -27,4 +27,17 @@ It combines speech recognition, real-time geolocation, and large language models
 - OpenChargeMap / TomTom (retrieval)
 - JSON for storage
 
+---
+
+## **Important – API Keys Required**
+
+Before running the project, make sure to add your API keys in a `.env` file at the root of the project.
+
+The following keys are required:
+
+- `OPENAI_API_KEY` (or `OPENROUTER_API_KEY`) → for accessing the language model (GPT-4, LLaMA, etc.)
+- `OPENCHARGEMAP_API_KEY` → for retrieving charging station data
+- `TOMTOM_API_KEY` → for additional location or navigation services
+
+Without valid API keys, the application will not be able to connect to the language model or external retrieval services.
 
