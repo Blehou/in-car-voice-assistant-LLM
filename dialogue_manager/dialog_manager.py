@@ -1,4 +1,5 @@
 import os
+import time
 from pathlib import Path
 from dialogue_manager.state import State
 from utils.asr import recognize_speech, record_audio
@@ -9,8 +10,10 @@ from recommendation_engine.prompt_builder import build_prompt, save_prompt
 from recommendation_engine.prompt_builder import update_prompt_history, load_prompt
 from information_retriever.retriever import retrieve_stations
 from language_model.gpt4_driver_assistant import get_response
+from language_model.llama_driver_assistant import get_llama_response
 from preferences_database.update_preferences import add_history_entry
 from recommendation_engine.evaluation import collect_user_feedback, evaluate_recommendations
+from recommendation_engine.evaluation import compute_BERTScore, compute_ROUGE_L
 
 PROMPT_DIR = Path("prompts")
 
@@ -25,7 +28,12 @@ class DialogueManager:
         self.stations = []
         self.exit = False
         self.recommendations = []
+        self.timeToRecommendation = 0
+        self.start_time = time.time()  # timestamp for the start of the current recommendation
+        self.end_time = 0  # timestamp for the end of the current recommendation
         self.ind = 0 #current recommendation index
+        self.bert_score = 0.0
+        self.rouge_l_score = 0.0
 
     def handle_input(self):
         if self.state == State.IDLE:
@@ -70,16 +78,28 @@ class DialogueManager:
             if self.beginning:
                 self.beginning = False
                 top = self.recommendations[:3]
+
                 # Create a prompt for the LLM
                 # And save it to a file
                 prompt = build_prompt(self.user_query, top)
                 save_prompt(prompt)
+
                 # Get the response from the LLM
+                start = time.time()
                 response = get_response(prompt)
+                ### response = get_llama_response(prompt)
+                end = time.time()
+                print(f"Response time: {end - start:.2f} seconds")
+
                 # Update the conversation history
                 list_file = os.listdir(PROMPT_DIR)
                 last_file = list_file[-1]
                 update_prompt_history(last_file, response, who="assistant")
+
+                # Calcul de BERTScore
+                self.bert_score = compute_BERTScore(response)
+                # Calcul de ROUGE-L
+                self.rouge_l_score = compute_ROUGE_L(response)
 
                 self.state = State.WAIT_USER_RESPONSE
 
@@ -88,30 +108,46 @@ class DialogueManager:
                     list_file = os.listdir(PROMPT_DIR)
                     last_file = list_file[-1]
                     prompt = load_prompt(last_file)
+
                     # Get the response from the LLM
                     response = get_response(prompt)
                     # Update the conversation history
                     update_prompt_history(last_file, response, who="assistant")
 
-                    if "first" in self.response_user or "option one" in self.response_user or "number one" in self.response_user:
+                    if "first" in self.response_user or "option one" in self.response_user or "number one" in self.response_user or "yes" in self.response_user:
                         add_history_entry(self.recommendations[0]["name"], self.recommendations[0]["provider"], used=True)
+                        end_time = time.time()
+                        self.timeToRecommendation = end_time - self.start_time
+                        print(f"Time taken to get recommendation: {self.timeToRecommendation:.2f} seconds")
                         self.state = State.SAVE_FEEDBACK
 
-                    elif "second" in self.response_user or "option two" in self.response_user or "number two" in self.response_user:
+                    elif "second" in self.response_user or "option two" in self.response_user or "number two" in self.response_user or "yes" in self.response_user:
                         add_history_entry(self.recommendations[1]["name"], self.recommendations[1]["provider"], used=True)
+                        end_time = time.time()
+                        self.timeToRecommendation = end_time - self.start_time
+                        print(f"Time taken to get recommendation: {self.timeToRecommendation:.2f} seconds")
                         self.state = State.SAVE_FEEDBACK
                     
-                    elif "third" in self.response_user or "option three" in self.response_user or "number three" in self.response_user:
+                    elif "third" in self.response_user or "option three" in self.response_user or "number three" in self.response_user or "yes" in self.response_user:
                         add_history_entry(self.recommendations[2]["name"], self.recommendations[2]["provider"], used=True)
+                        end_time = time.time()
+                        self.timeToRecommendation = end_time - self.start_time
+                        print(f"Time taken to get recommendation: {self.timeToRecommendation:.2f} seconds")
                         self.state = State.SAVE_FEEDBACK
+                    else:
+                        self.state = State.WAIT_USER_RESPONSE
+                        
 
                 if self.next_proposal:
                     self.next_proposal = False
                     top = self.recommendations[self.ind:self.ind+3]
+
                     # Create a prompt for the LLM
                     prompt = build_prompt(self.user_query, top)
+
                     # Get the response from the LLM
                     response = get_response(prompt)
+
                     # Update the conversation history
                     list_file = os.listdir(PROMPT_DIR)
                     last_file = list_file[-1]
@@ -149,7 +185,9 @@ class DialogueManager:
             feedback = collect_user_feedback(self.recommendations)
             result = evaluate_recommendations(
                 recommended=[r["name"] for r in self.recommendations],
-                feedback=feedback
+                feedback=feedback, 
+                BERTScore=self.bert_score,
+                RougeScore=self.rouge_l_score,
             )
 
             self.state = State.END
@@ -174,8 +212,12 @@ class DialogueManager:
                 self.response_user = ""
                 self.stations = []
                 self.recommendations = []
+                self.start_time = time.time()
+                self.end_time = 0
                 self.ind = 0
-            else:
+            elif mssg.lower() in ["no", "n", "exit", "quit", "stop"]:
                 self.exit = True
                 return "Thank you for using our service. Goodbye!"
-            
+            else:
+                print("Invalid response. Please answer with 'yes' or 'no'.")
+                self.state == State.END
