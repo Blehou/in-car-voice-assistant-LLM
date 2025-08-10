@@ -41,7 +41,7 @@ The following keys are required:
 
 Without valid API keys, the application will not be able to connect to the language model or external retrieval services.
 
-Make sure to run the `setup.py` to install all folder necessary for this project. 
+Make sure you run the `setup.py` file to install all the necessary files for this project.
 
 ---
 
