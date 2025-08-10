@@ -1,0 +1,17 @@
+.venv/
+dialogue_manager/__pycache__/
+information_retriever/__pycache__/
+intent_classifier/__pycache__/
+intent_classifier/Dataset/
+intent_classifier/Models/
+intent_classifier/Visualisation/
+language_model/__pycache__/
+preferences_database/__pycache__/
+preferences_database/user_preferences.json
+prompts/
+recommendation_engine/__pycache__/
+recommendation_engine/evaluation_log.json
+user/__pycache__/
+user/audio/
+user/logs/
+utils/__pycache__/
