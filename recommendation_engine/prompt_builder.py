@@ -1,9 +1,15 @@
-"""
-prompt_builder.py
+######################################################################
+# prompt_builder.py
 
-Generates a human-like LLM prompt from selected recommendations,
-and saves it as a .txt file inside the prompts/ directory.
-"""
+# Generates a human-like LLM prompt from selected recommendations,
+# and saves it as a .txt file inside the prompts/ directory. 
+#
+# Functions:
+### - build_prompt
+### - save_prompt
+### - update_prompt_history
+### - load_prompt
+######################################################################
 
 from pathlib import Path
 import os
@@ -12,13 +18,14 @@ PROMPT_DIR = Path("prompts")
 PROMPT_DIR.mkdir(exist_ok=True)
 
 
-def build_prompt(query: str, recommendations: list[dict]) -> str:
+def build_prompt(query: str, recommendations: list[dict], POIs_type: str = "stations") -> str:
     """
     Builds a natural prompt summarizing the recommendations for the LLM.
 
     Args:
         query (str): what the user asked
         recommendations (list): list of dicts with name, distance_km, type or provider
+        POIs_type (str): type of points of interest (default: "stations")
 
     Returns:
         str: formatted prompt
@@ -26,16 +33,27 @@ def build_prompt(query: str, recommendations: list[dict]) -> str:
     prompt = f"User request: \"{query}\"\n\n"
     prompt += "Here are the filtered recommendations:\n"
     
-    for rec in recommendations:
-        name = rec.get("name", "Unknown")
-        distance = rec.get("distance_km", "?")
-        provider = rec.get("provider", "N/A")
-        prompt += f"- {name} ({provider}), {distance} km away\n"
-    
+    if POIs_type == "stations":
+        for rec in recommendations:
+            name = rec.get("name", "Unknown")
+            distance = rec.get("distance_km", "?")
+            provider = rec.get("provider", "N/A")
+            prompt += f"- {name} ({provider}), {distance} km away\n"
+
+    elif POIs_type == "restaurants" or POIs_type == "hobbies":
+        for rec in recommendations:
+            name = rec.get("name", "Unknown")
+            rating = rec.get("rating", "N/A")
+            distance = rec.get("distance_km", "?")
+            website = rec.get("website", "N/A")
+            prompt += f"- {name} (Rating: {rating}), {distance} km away, {website}\n"
+
     prompt += "\nAct as an AI expert specialising in the field of in-car voice assistants for driving assistance.\n"
-    prompt += "Based on the driver's request and the list of recommendations provided, intelligently and appropriately suggest\n"
-    prompt += "recommendations to the driver so that he or she can make a choice.\n\n"
-    
+    prompt += "Based on the driver's request and the list of recommendations provided:\n"
+    prompt += "- Suggest all recommendations concisely so that the driver can make a choice.\n"
+    prompt += "- Respond in one or two short sentences only.\n"
+    prompt += "- If available, include the website in the answer to help the driver book or check details easily.\n\n"
+
     return prompt
 
 def save_prompt(prompt: str):
@@ -67,7 +85,7 @@ def update_prompt_history(file: str, response: str, who: str = "assistant"):
     label = "User" if who.lower() == "user" else "Assistant"
     
     with open(path, "a", encoding="utf-8") as f:
-        f.write(f"{label}: {response.strip()}\n")
+        f.write(f"{label}: {response.strip()}\n\n")
 
 
 def load_prompt(file: str) -> str:

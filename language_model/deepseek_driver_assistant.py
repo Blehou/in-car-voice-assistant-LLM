@@ -3,7 +3,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 
 # Load API key from .env
-load_dotenv(dotenv_path=".env")
+load_dotenv()
 api_key = os.getenv("OPENROUTER_API_KEY")
 
 if not api_key:
@@ -15,19 +15,16 @@ client = OpenAI(
     base_url="https://openrouter.ai/api/v1"
 )
 
-def get_response(prompt: str, model: str = "openai/gpt-4-1106-preview") -> str:
+def get_deepseek_response(prompt: str, model: str = "deepseek/deepseek-chat-v3-0324:free") -> str:
     """
-    Get a response from OpenRouter-compatible model using OpenAI SDK v1+.
-    This function sends a prompt to the OpenRouter API and returns the model's response.
-    It uses the OpenAI Python SDK to interact with the OpenRouter API.
-    The function is designed to be used in a car assistant context, where the model is expected
-    to provide concise and helpful responses.
+    Get a response from DeepSeek model via OpenRouter.
 
     Args:
-        prompt (str): The input prompt for the model.
-        model (str): The model to use. Defaults to "openai/gpt-4-1106-preview".
+        prompt (str): the user's request
+        model (str): model ID on OpenRouter
+
     Returns:
-        str: The model's response.
+        str: response from the assistant
     """
     try:
         chat_completion = client.chat.completions.create(
@@ -42,11 +39,10 @@ def get_response(prompt: str, model: str = "openai/gpt-4-1106-preview") -> str:
         )
         return chat_completion.choices[0].message.content.strip()
     except Exception as e:
-        print(f"[ERROR] OpenRouter call failed: {e}")
+        print(f"[ERROR] DeepSeek via OpenRouter failed: {e}")
         return "Sorry, I couldn't generate a response right now."
 
-
 if __name__ == "__main__":
-    prompt = "Where can I find the nearest gas station?"
-    response = get_response(prompt)
-    print(f"Response: {response}")
+    prompt = "Suggest a fuel station within 5 km."
+    response = get_deepseek_response(prompt)
+    print(f"DeepSeek response: {response}")

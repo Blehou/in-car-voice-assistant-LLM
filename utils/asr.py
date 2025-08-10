@@ -3,9 +3,13 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 from pathlib import Path
 from datetime import datetime
+import time
+from faster_whisper import WhisperModel
+
 
 # Load Whisper-small model once
 model = whisper.load_model("small")
+fast_model = WhisperModel("small", device="cpu", compute_type="int8")
 
 # Define the output directory
 AUDIO_DIR = Path("user/audio")
@@ -50,7 +54,46 @@ def recognize_speech(audio_path: str) -> str:
     return result["text"].strip()
 
 
+def recognize_speech_fast(audio_path: str) -> str:
+    """
+    Transcribe speech from an audio file using faster-whisper.
+
+    This function uses the optimized faster-whisper library to convert spoken
+    audio into text. It loads a quantized version of the Whisper model for
+    faster inference on CPU.
+
+    Args:
+        audio_path (str): Path to the audio file (.wav) to transcribe.
+
+    Returns:
+        str: The transcribed text from the audio file.
+    """
+    print("[INFO] Transcribing audio with faster-whisper...")
+    segments, _ = fast_model.transcribe(audio_path)
+    result = " ".join(segment.text for segment in segments)
+    return result.strip()
+
+
+
 if __name__ == "__main__":
+    # Audio recording timing
+    start_audio = time.time()
     audio_file = record_audio(duration=5)
-    transcription = recognize_speech(audio_file)
-    print("\nTranscription:", transcription)
+    end_audio = time.time()
+    print(f"[INFO] Audio recording took {end_audio - start_audio:.2f} seconds")
+    print('\n')
+
+    # # Whisper timing
+    # start_whisper = time.time()
+    # transcription1 = recognize_speech(audio_file)
+    # end_whisper = time.time()
+    # print(f"[INFO] Whisper-small transcription took {end_whisper - start_whisper:.2f} seconds")
+    # print(transcription1)
+    # print('\n')
+
+    # Faster-whisper timing
+    start_fast = time.time()
+    transcription2 = recognize_speech_fast(audio_file)
+    end_fast = time.time()
+    print(f"[INFO] Faster-whisper transcription took {end_fast - start_fast:.2f} seconds")
+    print(transcription2)

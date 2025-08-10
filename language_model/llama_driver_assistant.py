@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv("OPENROUTER_API_KEY")
 
+
 if not api_key:
     raise ValueError("OPENROUTER_API_KEY not found in .env")
 
@@ -34,6 +35,7 @@ def get_llama_response(prompt: str, model: str = "meta-llama/llama-3-8b-instruct
                 {"role": "user", "content": prompt}
             ],
             temperature=0.6,
+            # Controls the length of the response (≈ 1-2 short sentences max)
             max_tokens=150
         )
         return chat_completion.choices[0].message.content.strip()

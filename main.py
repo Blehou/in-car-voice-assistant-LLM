@@ -36,4 +36,3 @@ while not dm.exit:
         print(f"Assistant: {reply}")
         speak(reply)
         print("\n")
-    
