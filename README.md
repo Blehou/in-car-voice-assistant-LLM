@@ -9,7 +9,7 @@ It combines speech recognition, real-time geolocation, and large language models
 
 -  **Voice-based interaction** with Automatic Speech Recognition (ASR)
 -  **Real-time geolocation** via GPS or address input
--  **LLM-powered response generation** (e.g. GPT, LLaMA)
+-  **LLM-powered response generation** (e.g. GPT, LLaMA, etc.)
 -  **Personalized recommendation engine** based on driver preferences
 -  **Dialogue management** with a Finite State Machine (FSM)
 -  **Natural voice output** using Text-to-Speech (TTS)
@@ -24,7 +24,7 @@ It combines speech recognition, real-time geolocation, and large language models
 - Whisper (ASR)
 - pyttsx3 (TTS)
 - OpenAI / OpenRouter API (LLMs)
-- OpenChargeMap / TomTom (retrieval)
+- OpenChargeMap / TomTom / Google Place API(retrieval)
 - JSON for storage
 
 ---
@@ -40,4 +40,14 @@ The following keys are required:
 - `TOMTOM_API_KEY` → for additional location or navigation services
 
 Without valid API keys, the application will not be able to connect to the language model or external retrieval services.
+
+Make sure to run the `setup.py` to install all folder necessary for this project. 
+
+---
+
+## **Create environment and install dependencies **
+
+`python -m venv .venv`
+`.venv\Scripts\activate`
+`pip install -r requirements.txt`
 
