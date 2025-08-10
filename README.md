@@ -45,9 +45,9 @@ Make sure to run the `setup.py` to install all folder necessary for this project
 
 ---
 
-## **Create environment and install dependencies **
+## **Create environment and install dependencies**
 
-`python -m venv .venv`
-`.venv\Scripts\activate`
-`pip install -r requirements.txt`
+- `python -m venv .venv`
+- `.venv\Scripts\activate`
+- `pip install -r requirements.txt`
 
