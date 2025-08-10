@@ -1,8 +1,0 @@
-User request: "Where can I quickly charge my car?"
-Here are the filtered recommendations:
-- Cranfield University (BP Pulse (UK)), 1.42 km away
-- Cranfield University - Martell House (BP Pulse (UK)), 1.63 km away
-
-Act as an AI expert specialising in the field of in-car voice assistants for driving assistance.
-Based on the driver's request and the list of recommendations provided, intelligently and appropriately suggest
-recommendations to the driver so that he or she can make a choice.
