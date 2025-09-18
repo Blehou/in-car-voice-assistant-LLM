@@ -38,6 +38,7 @@ The following keys are required:
 - `OPENAI_API_KEY` (or `OPENROUTER_API_KEY`) → for accessing the language model (GPT-4, LLaMA, etc.)
 - `OPENCHARGEMAP_API_KEY` → for retrieving charging station data
 - `TOMTOM_API_KEY` → for additional location or navigation services
+- `GOOGLE_PLACE_API_KEY` → for retrieving restaurants and hobbies
 
 Without valid API keys, the application will not be able to connect to the language model or external retrieval services.
 
